@@ -1,6 +1,10 @@
 import os
 
+from dotenv import load_dotenv
 from groq import Groq
+
+# Load environment variables for API credentials
+load_dotenv()
 
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
@@ -16,17 +20,17 @@ chat_completion = client.chat.completions.create(
         # how it should behave throughout the conversation.
         {
             "role": "system",
-            "content": "you are a helpful assistant."
+            "content": "موجودیت های متن کاربر را لیست کن."
         },
         # Set a user message for the assistant to respond to.
         {
             "role": "user",
-            "content": "Explain the importance of fast language models",
+            "content": "محمد الجولانی مردم سوریه را بدبخت میکند.",
         }
     ],
 
     # The language model which will generate the completion.
-    model="llama3-8b-8192",
+    model="gemma2-9b-it",
 
     #
     # Optional parameters
