@@ -1,63 +1,32 @@
-import os
+from config import groq_client as client
+from telegram_sample_data import generate_sample_telegram_data
 
-from dotenv import load_dotenv
-from groq import Groq
-
-# Load environment variables for API credentials
-load_dotenv()
-
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
+telegram_data = generate_sample_telegram_data()
 
 chat_completion = client.chat.completions.create(
-    #
-    # Required parameters
-    #
     messages=[
-        # Set an optional system message. This sets the behavior of the
-        # assistant and can be used to provide specific instructions for
-        # how it should behave throughout the conversation.
         {
             "role": "system",
-            "content": "موجودیت های متن کاربر را لیست کن."
+            "content": "Extract entities from user query.\nRespond with the list of entities only! Nothing else!"
         },
-        # Set a user message for the assistant to respond to.
         {
             "role": "user",
-            "content": "محمد الجولانی مردم سوریه را بدبخت میکند.",
+            "content": telegram_data[2].text,
         }
     ],
-
-    # The language model which will generate the completion.
     model="gemma2-9b-it",
-
-    #
-    # Optional parameters
-    #
-
-    # Controls randomness: lowering results in less random completions.
-    # As the temperature approaches zero, the model will become deterministic
-    # and repetitive.
-    temperature=0.5,
-
-    # The maximum number of tokens to generate. Requests can use up to
-    # 32,768 tokens shared between prompt and completion.
-    max_tokens=1024,
-
-    # Controls diversity via nucleus sampling: 0.5 means half of all
-    # likelihood-weighted options are considered.
-    top_p=1,
-
-    # A stop sequence is a predefined or user-specified text string that
-    # signals an AI to stop generating content, ensuring its responses
-    # remain focused and concise. Examples include punctuation marks and
-    # markers like "[end]".
-    stop=None,
-
-    # If set, partial message deltas will be sent.
-    stream=False,
+    temperature=0,
+    max_tokens=128,
 )
 
-# Print the completion returned by the LLM.
+print(f"Telegram sample data:\n"
+      f"- Text: '{telegram_data[2].text}'\n"
+      f"- Entities: {', '.join(telegram_data[2].entities)}")
+# Telegram sample data:
+# - Text: 'Breaking: Major tech conference announces keynote speakers for upcoming AI summit.'
+# - Entities: AI summit, tech conference
+
+print("\nExtracted entities by LLM:")
 print(chat_completion.choices[0].message.content)
+# Extracted entities by LLM:
+# tech conference, keynote speakers, AI summit

@@ -1,27 +1,29 @@
 # Social Network Crawling Workshop Requirements
 
 # Core Python Libraries
-python-dotenv>=0.21.0
+python-dotenv~=0.21.0
 
 # Social Network API Libraries
-tweepy>=4.14.0
-snscrape>=0.6.2.20230407
-telethon>=1.28.5
-pyrogram>=2.0.106
+tweepy~=4.14.0
+snscrape~=0.6.2.20230407
+telethon~=1.28.5
+pyrogram~=2.0.106
 
 # NLP and Machine Learning
-spacy>=3.5.2
-nltk>=3.8.1
-torch>=2.0.1
-transformers>=4.30.2
+spacy~=3.5.2
+nltk~=3.8.1
+torch~=2.0.1
+transformers~=4.30.2
 
 # Data Processing
-pandas>=2.0.1
-numpy>=1.24.3
+pandas~=2.0.1
+numpy~=1.24.3
+pydantic~=2.10.4
 
 # Optional but Recommended
-scikit-learn>=1.2.2
-matplotlib>=3.7.1
+scikit-learn~=1.2.2
+matplotlib~=3.7.1
 
-# LLM
-groq
+# LLM inferences
+groq~=0.13.1
+openai~=1.59.3

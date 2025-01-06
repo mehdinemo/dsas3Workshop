@@ -1,23 +1,29 @@
 # Sample Telegram Data Collection Simulation
+from datetime import datetime
+from enum import Enum
+from typing import Optional, List
 
-class TelegramMessage:
-    def __init__(self,
-                 id,
-                 sender,
-                 text,
-                 timestamp,
-                 media_type=None,
-                 reply_to=None,
-                 forward_from=None,
-                 entities=None):
-        self.id = id
-        self.sender = sender
-        self.text = text
-        self.timestamp = timestamp
-        self.media_type = media_type
-        self.reply_to = reply_to
-        self.forward_from = forward_from
-        self.entities = entities or []
+from pydantic import BaseModel
+
+
+class MediaType(str, Enum):
+    TEXT = "text"
+    IMAGE = "image"
+    VIDEO = "video"
+    AUDIO = "audio"
+    LOCATION = "location"
+
+
+class TelegramMessage(BaseModel):
+    id: int
+    sender: str
+    text: str
+    timestamp: datetime
+    media_type: Optional[MediaType] = None
+    reply_to: Optional[int] = None
+    forward_from: Optional[str] = None
+    location: Optional[str] = None
+    entities: Optional[List[str]] = None
 
 
 def generate_sample_telegram_data():
@@ -30,17 +36,16 @@ def generate_sample_telegram_data():
             id=1001,
             sender="AI_Research_Group",
             text="Exciting breakthrough in natural language processing! Our new model shows 95% accuracy in sentiment analysis. 🚀 #AIResearch",
-            timestamp="2024-02-15 10:30:45",
-            media_type="text",
-            entities=["#AIResearch", "natural language processing"],
-            reply_to=None
+            timestamp="2024-02-15T10:30:45",
+            media_type=MediaType.TEXT,
+            entities=["#AIResearch", "natural language processing"]
         ),
         TelegramMessage(
             id=1002,
             sender="DataScientist_22",
             text="Check out this interesting visualization of machine learning trends.",
-            timestamp="2024-02-15 11:15:20",
-            media_type="image",
+            timestamp="2024-02-15T11:15:20",
+            media_type=MediaType.TEXT,
             reply_to=1001,
             forward_from="Tech_Insights_Channel"
         ),
@@ -48,8 +53,8 @@ def generate_sample_telegram_data():
             id=1003,
             sender="GlobalTechNews",
             text="Breaking: Major tech conference announces keynote speakers for upcoming AI summit.",
-            timestamp="2024-02-15 12:45:10",
-            media_type="text",
+            timestamp="2024-02-15T12:45:10",
+            media_type=MediaType.TEXT,
             entities=["AI summit", "tech conference"],
             forward_from="TechCrunch"
         ),
@@ -57,16 +62,16 @@ def generate_sample_telegram_data():
             id=1004,
             sender="ResearchMethodology",
             text="Important thread on ethical considerations in data collection 🔍\n\n1/3 Privacy is paramount\n2/3 Consent matters\n3/3 Anonymization is crucial",
-            timestamp="2024-02-15 14:20:30",
-            media_type="text",
+            timestamp="2024-02-15T14:20:30",
+            media_type=MediaType.TEXT,
             entities=["data collection", "ethical considerations"]
         ),
         TelegramMessage(
             id=1005,
             sender="CodersNetwork",
             text="Python 3.12 released with significant performance improvements! Checkout the new features.",
-            timestamp="2024-02-15 15:55:00",
-            media_type="text",
+            timestamp="2024-02-15T15:55:00",
+            media_type=MediaType.TEXT,
             entities=["Python", "programming"],
             reply_to=None
         ),
@@ -74,8 +79,8 @@ def generate_sample_telegram_data():
             id=1006,
             sender="AIEthicsDiscussion",
             text="Debate: Can large language models truly understand context?\n\nPerspectives from leading researchers:\n- Dr. Emily Chen argues for nuanced interpretation\n- Prof. Michael Rodriguez emphasizes computational limitations",
-            timestamp="2024-02-15 16:40:15",
-            media_type="text",
+            timestamp="2024-02-15T16:40:15",
+            media_type=MediaType.TEXT,
             entities=["AI ethics", "language models", "context understanding"],
             reply_to=None
         )
@@ -117,10 +122,15 @@ def analyze_telegram_data(messages):
     return analysis
 
 
-# Example usage
-telegram_data = generate_sample_telegram_data()
-data_analysis = analyze_telegram_data(telegram_data)
+def main():
+    # Example usage
+    telegram_data = generate_sample_telegram_data()
+    data_analysis = analyze_telegram_data(telegram_data)
 
-print("Telegram Data Analysis:")
-for key, value in data_analysis.items():
-    print(f"{key.replace('_', ' ').title()}: {value}")
+    print("Telegram Data Analysis:")
+    for key, value in data_analysis.items():
+        print(f"{key.replace('_', ' ').title()}: {value}")
+
+
+if __name__ == "__main__":
+    main()
